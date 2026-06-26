@@ -221,7 +221,7 @@ function getApiBaseUrl() {
 
   // Production Fallback (agar env nahi mili to)
   console.warn('⚠️ VITE_API_URL not found! Using Render fallback');
-  return 'https://mern-linkedin-post-generator-multiagents.onrender.com/api';
+  return 'https://mern-linkedin-ai-agent.onrender.com/api';
 }
 
 const api = axios.create({
