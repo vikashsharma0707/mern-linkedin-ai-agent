@@ -691,7 +691,7 @@ const AnalyticsPage = () => {
                     <p className="text-sm font-medium text-gray-900 dark:text-white mb-1">
                       {completionPct}% of your generations are saved
                     </p>
-                    <p className="text-xs text-gray-500 dark:text-white/40">Your save rate so far</p>
+                    <p className="text-xs text-gray-500 dark:text-white/40">Your save rate so far good for me</p>
                   </div>
                 </motion.div>
               </>
