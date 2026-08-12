@@ -1,12 +1,45 @@
+// // // // // // import axios from 'axios'
+
+// // // // // // const api = axios.create({
+// // // // // //   baseURL: `${import.meta.env.VITE_API_URL}/api`,
+// // // // // //   headers: {
+// // // // // //     'Content-Type': 'application/json',
+// // // // // //   },
+// // // // // // })
+
+
+// // // // // // api.interceptors.request.use((config) => {
+// // // // // //   const token = localStorage.getItem('token')
+// // // // // //   if (token) {
+// // // // // //     config.headers.Authorization = `Bearer ${token}`
+// // // // // //   }
+// // // // // //   return config
+// // // // // // })
+
+// // // // // // api.interceptors.response.use(
+// // // // // //   (response) => response,
+// // // // // //   (error) => {
+// // // // // //     if (error.response?.status === 401) {
+// // // // // //       localStorage.removeItem('token')
+// // // // // //       window.location.href = '/login'
+// // // // // //     }
+// // // // // //     return Promise.reject(error)
+// // // // // //   }
+// // // // // // )
+
+// // // // // // export default api
+
+
+
+
 // // // // // import axios from 'axios'
 
 // // // // // const api = axios.create({
-// // // // //   baseURL: `${import.meta.env.VITE_API_URL}/api`,
+// // // // //   baseURL: `${import.meta.env.VITE_API_URL}/api`,   // Yeh line important hai
 // // // // //   headers: {
 // // // // //     'Content-Type': 'application/json',
 // // // // //   },
 // // // // // })
-
 
 // // // // // api.interceptors.request.use((config) => {
 // // // // //   const token = localStorage.getItem('token')
@@ -34,8 +67,10 @@
 
 // // // // import axios from 'axios'
 
+// // // // const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5173'
+
 // // // // const api = axios.create({
-// // // //   baseURL: `${import.meta.env.VITE_API_URL}/api`,   // Yeh line important hai
+// // // //   baseURL: `${API_URL}/api`,
 // // // //   headers: {
 // // // //     'Content-Type': 'application/json',
 // // // //   },
@@ -63,67 +98,99 @@
 // // // // export default api
 
 
-
-
-// // // import axios from 'axios'
-
-// // // const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5173'
+// // // import axios from 'axios';
 
 // // // const api = axios.create({
-// // //   baseURL: `${API_URL}/api`,
+// // //   baseURL: import.meta.env.VITE_API_URL,
 // // //   headers: {
 // // //     'Content-Type': 'application/json',
 // // //   },
-// // // })
+// // // });
 
 // // // api.interceptors.request.use((config) => {
-// // //   const token = localStorage.getItem('token')
+// // //   const token = localStorage.getItem('token');
+
 // // //   if (token) {
-// // //     config.headers.Authorization = `Bearer ${token}`
+// // //     config.headers.Authorization = `Bearer ${token}`;
 // // //   }
-// // //   return config
-// // // })
+
+// // //   return config;
+// // // });
 
 // // // api.interceptors.response.use(
 // // //   (response) => response,
 // // //   (error) => {
 // // //     if (error.response?.status === 401) {
-// // //       localStorage.removeItem('token')
-// // //       window.location.href = '/login'
+// // //       localStorage.removeItem('token');
 // // //     }
-// // //     return Promise.reject(error)
-// // //   }
-// // // )
 
-// // // export default api
+// // //     return Promise.reject(error);
+// // //   }
+// // // );
+
+// // // export default api;
+
+
+
+
 
 
 // // import axios from 'axios';
 
+// // // Function जो सही URL बनाएगा
+// // function getApiBaseUrl() {
+// //   const envUrl = import.meta.env.VITE_API_URL;
+  
+// //   console.log('Raw VITE_API_URL:', envUrl);
+  
+// //   // अगर environment variable है तो /api suffix add करो
+// //   if (envUrl) {
+// //     const url = envUrl.endsWith('/api') 
+// //       ? envUrl 
+// //       : `${envUrl}/api`;
+// //     console.log('Final API Base URL:', url);
+// //     return url;
+// //   }
+  
+// //   // Fallback - अगर env variable नहीं है
+// //   return 'https://mern-linkedin-post-generator-multiagents.onrender.com/api';
+// // }
+
 // // const api = axios.create({
-// //   baseURL: import.meta.env.VITE_API_URL,
+// //   baseURL: getApiBaseUrl(),
 // //   headers: {
 // //     'Content-Type': 'application/json',
 // //   },
+// //   timeout: 600000,
 // // });
+
+// // console.log('Axios instance baseURL:', api.defaults.baseURL);
 
 // // api.interceptors.request.use((config) => {
 // //   const token = localStorage.getItem('token');
-
+// //   console.log('Request URL:', config.baseURL + config.url);
+  
 // //   if (token) {
 // //     config.headers.Authorization = `Bearer ${token}`;
 // //   }
-
+  
 // //   return config;
 // // });
 
 // // api.interceptors.response.use(
 // //   (response) => response,
 // //   (error) => {
+// //     console.error('API Error:', {
+// //       status: error.response?.status,
+// //       message: error.message,
+// //       url: error.config?.url,
+// //     });
+    
 // //     if (error.response?.status === 401) {
 // //       localStorage.removeItem('token');
+// //       window.location.href = '/login';
 // //     }
-
+    
 // //     return Promise.reject(error);
 // //   }
 // // );
@@ -133,27 +200,28 @@
 
 
 
-
-
 // import axios from 'axios';
 
-// // Function जो सही URL बनाएगा
 // function getApiBaseUrl() {
-//   const envUrl = import.meta.env.VITE_API_URL;
-  
-//   console.log('Raw VITE_API_URL:', envUrl);
-  
-//   // अगर environment variable है तो /api suffix add करो
+//   const envUrl = import.meta.env.VITE_API_URL?.trim();
+
+//   console.log('🔍 VITE_API_URL from env:', envUrl);
+
 //   if (envUrl) {
-//     const url = envUrl.endsWith('/api') 
-//       ? envUrl 
-//       : `${envUrl}/api`;
-//     console.log('Final API Base URL:', url);
-//     return url;
+//     const cleanUrl = envUrl.endsWith('/') ? envUrl.slice(0, -1) : envUrl;
+    
+//     // Agar user ne already /api daal diya ho to bhi handle karo
+//     const finalUrl = cleanUrl.endsWith('/api') 
+//       ? cleanUrl 
+//       : `${cleanUrl}/api`;
+
+//     console.log('✅ Final API Base URL:', finalUrl);
+//     return finalUrl;
 //   }
-  
-//   // Fallback - अगर env variable नहीं है
-//   return 'https://mern-linkedin-post-generator-multiagents.onrender.com/api';
+
+//   // Production Fallback (agar env nahi mili to)
+//   console.warn('⚠️ VITE_API_URL not found! Using Render fallback');
+//   return 'https://mern-linkedin-ai-agent.onrender.com/api';
 // }
 
 // const api = axios.create({
@@ -161,36 +229,40 @@
 //   headers: {
 //     'Content-Type': 'application/json',
 //   },
-//   timeout: 600000,
+//   timeout: 120000, // 2 minutes
 // });
 
-// console.log('Axios instance baseURL:', api.defaults.baseURL);
+// console.log('Axios initialized with baseURL:', api.defaults.baseURL);
 
+// // Request Interceptor
 // api.interceptors.request.use((config) => {
 //   const token = localStorage.getItem('token');
-//   console.log('Request URL:', config.baseURL + config.url);
   
 //   if (token) {
 //     config.headers.Authorization = `Bearer ${token}`;
 //   }
-  
-//   return config;
-// });
 
+//   // Debug log (production mein comment kar dena)
+//   console.log(`🚀 API Request: ${config.baseURL}${config.url}`);
+
+//   return config;
+// }, (error) => Promise.reject(error));
+
+// // Response Interceptor
 // api.interceptors.response.use(
 //   (response) => response,
 //   (error) => {
-//     console.error('API Error:', {
+//     console.error('❌ API Error Details:', {
 //       status: error.response?.status,
-//       message: error.message,
-//       url: error.config?.url,
+//       message: error.response?.data?.message || error.message,
+//       url: error.config?.baseURL + error.config?.url,
 //     });
-    
+
 //     if (error.response?.status === 401) {
 //       localStorage.removeItem('token');
-//       window.location.href = '/login';
+//       window.location.href = '/admin/login'; // ya jahan bhi login hai
 //     }
-    
+
 //     return Promise.reject(error);
 //   }
 // );
@@ -198,21 +270,28 @@
 // export default api;
 
 
-
-
 import axios from 'axios';
 
 function getApiBaseUrl() {
+  // In local dev, always go through Vite's dev-server proxy using a
+  // RELATIVE '/api' path. An absolute baseURL (VITE_API_URL or the Render
+  // fallback) bypasses the proxy entirely, no matter what vite.config.js
+  // says — that was why requests kept hitting Render instead of localhost.
+  if (import.meta.env.DEV) {
+    console.log('🔧 Dev mode: using relative /api (routed via Vite proxy -> localhost:5000)');
+    return '/api';
+  }
+
   const envUrl = import.meta.env.VITE_API_URL?.trim();
 
   console.log('🔍 VITE_API_URL from env:', envUrl);
 
   if (envUrl) {
     const cleanUrl = envUrl.endsWith('/') ? envUrl.slice(0, -1) : envUrl;
-    
+
     // Agar user ne already /api daal diya ho to bhi handle karo
-    const finalUrl = cleanUrl.endsWith('/api') 
-      ? cleanUrl 
+    const finalUrl = cleanUrl.endsWith('/api')
+      ? cleanUrl
       : `${cleanUrl}/api`;
 
     console.log('✅ Final API Base URL:', finalUrl);
@@ -237,7 +316,7 @@ console.log('Axios initialized with baseURL:', api.defaults.baseURL);
 // Request Interceptor
 api.interceptors.request.use((config) => {
   const token = localStorage.getItem('token');
-  
+
   if (token) {
     config.headers.Authorization = `Bearer ${token}`;
   }

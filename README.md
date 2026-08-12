@@ -155,6 +155,6 @@ linkedin-post-generator/
 - **Qwen** (`qwen/qwen-3`)
 - **Mistral** (`mistralai/mistral-small`)
 
-
+## License
 
 MIT License

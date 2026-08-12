@@ -1,195 +1,624 @@
-// import { useState } from 'react'
+// // import { useState } from 'react'
+// // import { motion, AnimatePresence } from 'framer-motion'
+// // import { Wand2, Loader2, Copy, Check, ArrowDown } from 'lucide-react'
+// // import api from '../services/api.js'
+// // import toast from 'react-hot-toast'
+
+// // const models = [
+// //   { value: 'gemini', label: 'Google Gemini', icon: 'G' },
+// //   { value: 'llama', label: 'Meta Llama', icon: 'L' },
+// //   { value: 'qwen', label: 'Qwen', icon: 'Q' },
+// //   { value: 'mistral', label: 'Mistral', icon: 'M' },
+// // ]
+
+// // const PostImprovementPage = () => {
+// //   const [content, setContent] = useState('')
+// //   const [model, setModel] = useState('gemini')
+// //   const [result, setResult] = useState(null)
+// //   const [loading, setLoading] = useState(false)
+// //   const [copiedField, setCopiedField] = useState(null)
+
+// //   const handleSubmit = async (e) => {
+// //     e.preventDefault()
+// //     if (!content || content.trim().length < 10) {
+// //       toast.error('Please enter at least 10 characters')
+// //       return
+// //     }
+// //     setLoading(true)
+// //     try {
+// //       const response = await api.post('/improve/post', { content, model })
+// //       if (response.data.success) {
+// //         setResult(response.data.data)
+// //         toast.success('Post improved!')
+// //       }
+// //     } catch (error) {
+// //       toast.error(error.response?.data?.message || 'Failed to improve post')
+// //     } finally {
+// //       setLoading(false)
+// //     }
+// //   }
+
+// //   const handleCopy = (text, field) => {
+// //     navigator.clipboard.writeText(text)
+// //     setCopiedField(field)
+// //     toast.success('Copied to clipboard!')
+// //     setTimeout(() => setCopiedField(null), 2000)
+// //   }
+
+// //   return (
+// //     <div className="space-y-6">
+// //       <div>
+// //         <h1 className="text-2xl font-bold text-secondary-900">Post Improvement Agent</h1>
+// //         <p className="text-secondary-500 mt-1">Paste your LinkedIn post and get AI-powered improvements</p>
+// //       </div>
+
+// //       <div className="grid lg:grid-cols-2 gap-6">
+// //         <div className="space-y-6">
+// //           <div className="card">
+// //             <div className="mb-4">
+// //               <label className="block text-sm font-medium text-secondary-700 mb-2">Your LinkedIn Post *</label>
+// //               <textarea
+// //                 value={content}
+// //                 onChange={(e) => setContent(e.target.value)}
+// //                 placeholder="Paste your LinkedIn post here..."
+// //                 className="textarea-field"
+// //                 rows={8}
+// //                 required
+// //               />
+// //             </div>
+// //             <div className="mb-4">
+// //               <label className="block text-sm font-medium text-secondary-700 mb-2">AI Model</label>
+// //               <div className="grid grid-cols-4 gap-2">
+// //                 {models.map((m) => (
+// //                   <button
+// //                     key={m.value}
+// //                     type="button"
+// //                     onClick={() => setModel(m.value)}
+// //                     className={`p-3 rounded-lg border text-center transition-all ${
+// //                       model === m.value ? 'border-primary-500 bg-primary-50 text-primary-700' : 'border-secondary-200 hover:border-secondary-300 text-secondary-600'
+// //                     }`}
+// //                   >
+// //                     <div className="text-lg font-bold mb-1">{m.icon}</div>
+// //                     <div className="text-xs font-medium">{m.label}</div>
+// //                   </button>
+// //                 ))}
+// //               </div>
+// //             </div>
+// //             <button
+// //               onClick={handleSubmit}
+// //               disabled={loading}
+// //               className="w-full btn-primary flex items-center justify-center gap-2 disabled:opacity-50"
+// //             >
+// //               {loading ? <Loader2 size={18} className="animate-spin" /> : <Wand2 size={18} />}
+// //               {loading ? 'Improving...' : 'Improve My Post'}
+// //             </button>
+// //           </div>
+// //         </div>
+
+// //         <div>
+// //           <AnimatePresence>
+// //             {result && (
+// //               <motion.div
+// //                 initial={{ opacity: 0, y: 20 }}
+// //                 animate={{ opacity: 1, y: 0 }}
+// //                 className="space-y-4"
+// //               >
+// //                 <div className="card">
+// //                   <div className="flex items-center justify-between mb-3">
+// //                     <h3 className="font-semibold text-secondary-900 flex items-center gap-2">
+// //                       <Wand2 size={18} className="text-warning-600" />
+// //                       Improved Post
+// //                     </h3>
+// //                     <button
+// //                       onClick={() => handleCopy(result.improvedPost, 'improved')}
+// //                       className="p-2 rounded-lg hover:bg-secondary-100 transition-colors"
+// //                     >
+// //                       {copiedField === 'improved' ? <Check size={16} className="text-success-600" /> : <Copy size={16} className="text-secondary-600" />}
+// //                     </button>
+// //                   </div>
+// //                   <div className="bg-secondary-50 rounded-lg p-4 whitespace-pre-wrap text-sm text-secondary-800 leading-relaxed">
+// //                     {result.improvedPost}
+// //                   </div>
+// //                 </div>
+
+// //                 {result.betterHooks && (
+// //                   <div className="card">
+// //                     <div className="flex items-center justify-between mb-3">
+// //                       <h3 className="font-semibold text-secondary-900 text-sm">Better Hooks</h3>
+// //                       <button
+// //                         onClick={() => handleCopy(result.betterHooks, 'hooks')}
+// //                         className="p-2 rounded-lg hover:bg-secondary-100 transition-colors"
+// //                       >
+// //                         {copiedField === 'hooks' ? <Check size={16} className="text-success-600" /> : <Copy size={16} className="text-secondary-600" />}
+// //                       </button>
+// //                     </div>
+// //                     <div className="bg-secondary-50 rounded-lg p-4 whitespace-pre-wrap text-sm text-secondary-700">
+// //                       {result.betterHooks}
+// //                     </div>
+// //                   </div>
+// //                 )}
+
+// //                 {result.betterCta && (
+// //                   <div className="card">
+// //                     <div className="flex items-center justify-between mb-3">
+// //                       <h3 className="font-semibold text-secondary-900 text-sm">Better CTAs</h3>
+// //                       <button
+// //                         onClick={() => handleCopy(result.betterCta, 'cta')}
+// //                         className="p-2 rounded-lg hover:bg-secondary-100 transition-colors"
+// //                       >
+// //                         {copiedField === 'cta' ? <Check size={16} className="text-success-600" /> : <Copy size={16} className="text-secondary-600" />}
+// //                       </button>
+// //                     </div>
+// //                     <div className="bg-secondary-50 rounded-lg p-4 whitespace-pre-wrap text-sm text-secondary-700">
+// //                       {result.betterCta}
+// //                     </div>
+// //                   </div>
+// //                 )}
+
+// //                 {result.formattingTips && (
+// //                   <div className="card">
+// //                     <div className="flex items-center justify-between mb-3">
+// //                       <h3 className="font-semibold text-secondary-900 text-sm">Formatting Tips</h3>
+// //                       <button
+// //                         onClick={() => handleCopy(result.formattingTips, 'formatting')}
+// //                         className="p-2 rounded-lg hover:bg-secondary-100 transition-colors"
+// //                       >
+// //                         {copiedField === 'formatting' ? <Check size={16} className="text-success-600" /> : <Copy size={16} className="text-secondary-600" />}
+// //                       </button>
+// //                     </div>
+// //                     <div className="bg-secondary-50 rounded-lg p-4 whitespace-pre-wrap text-sm text-secondary-700">
+// //                       {result.formattingTips}
+// //                     </div>
+// //                   </div>
+// //                 )}
+
+// //                 {result.engagementBoosters && (
+// //                   <div className="card">
+// //                     <div className="flex items-center justify-between mb-3">
+// //                       <h3 className="font-semibold text-secondary-900 text-sm">Engagement Boosters</h3>
+// //                       <button
+// //                         onClick={() => handleCopy(result.engagementBoosters, 'engagement')}
+// //                         className="p-2 rounded-lg hover:bg-secondary-100 transition-colors"
+// //                       >
+// //                         {copiedField === 'engagement' ? <Check size={16} className="text-success-600" /> : <Copy size={16} className="text-secondary-600" />}
+// //                       </button>
+// //                     </div>
+// //                     <div className="bg-secondary-50 rounded-lg p-4 whitespace-pre-wrap text-sm text-secondary-700">
+// //                       {result.engagementBoosters}
+// //                     </div>
+// //                   </div>
+// //                 )}
+// //               </motion.div>
+// //             )}
+// //           </AnimatePresence>
+// //         </div>
+// //       </div>
+// //     </div>
+// //   )
+// // }
+
+// // export default PostImprovementPage
+
+
+
+
+
+// import { useState, useCallback, useReducer } from 'react'
 // import { motion, AnimatePresence } from 'framer-motion'
-// import { Wand2, Loader2, Copy, Check, ArrowDown } from 'lucide-react'
+// import { Wand2, Loader2, Copy, Check, AlertCircle, RefreshCw } from 'lucide-react'
 // import api from '../services/api.js'
 // import toast from 'react-hot-toast'
 
-// const models = [
+// // ============================================================================
+// // Constants
+// // ============================================================================
+
+// const MODELS = [
 //   { value: 'gemini', label: 'Google Gemini', icon: 'G' },
 //   { value: 'llama', label: 'Meta Llama', icon: 'L' },
 //   { value: 'qwen', label: 'Qwen', icon: 'Q' },
 //   { value: 'mistral', label: 'Mistral', icon: 'M' },
 // ]
 
+// const MIN_CONTENT_LENGTH = 10
+// const MAX_CONTENT_LENGTH = 5000
+// const COPY_FEEDBACK_DURATION = 2000
+
+// // ============================================================================
+// // Form State Reducer
+// // ============================================================================
+
+// const formReducer = (state, action) => {
+//   switch (action.type) {
+//     case 'SET_CONTENT':
+//       return { ...state, content: action.payload.slice(0, MAX_CONTENT_LENGTH) }
+//     case 'SET_MODEL':
+//       return { ...state, model: action.payload }
+//     case 'RESET':
+//       return { content: '', model: 'gemini' }
+//     default:
+//       return state
+//   }
+// }
+
+// // ============================================================================
+// // Sub-components
+// // ============================================================================
+
+// const FormTextarea = ({ label, required, error, charCount, maxChars, ...props }) => (
+//   <div>
+//     <div className="flex items-center justify-between mb-2">
+//       <label className="block text-sm font-medium text-secondary-700">
+//         {label} {required && <span className="text-red-500">*</span>}
+//       </label>
+//       <span className="text-xs text-secondary-500">
+//         {charCount} / {maxChars}
+//       </span>
+//     </div>
+//     <textarea
+//       {...props}
+//       className={`textarea-field resize-none ${error ? 'border-red-500 focus:border-red-500 focus:ring-red-100' : ''}`}
+//       aria-invalid={!!error}
+//       aria-describedby={error ? `${props.name}-error` : undefined}
+//     />
+//     {error && (
+//       <p id={`${props.name}-error`} className="text-xs text-red-500 mt-1">
+//         {error}
+//       </p>
+//     )}
+//   </div>
+// )
+
+// const ModelSelector = ({ models, selectedModel, onModelChange, disabled }) => (
+//   <div>
+//     <label className="block text-sm font-medium text-secondary-700 mb-2">AI Model</label>
+//     <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+//       {models.map((m) => (
+//         <button
+//           key={m.value}
+//           type="button"
+//           onClick={() => onModelChange(m.value)}
+//           disabled={disabled}
+//           className={`p-3 rounded-lg border text-center transition-all ${
+//             selectedModel === m.value
+//               ? 'border-primary-500 bg-primary-50 text-primary-700'
+//               : 'border-secondary-200 hover:border-secondary-300 text-secondary-600 disabled:opacity-50'
+//           }`}
+//           aria-pressed={selectedModel === m.value}
+//           aria-label={m.label}
+//         >
+//           <div className="text-lg font-bold mb-1">{m.icon}</div>
+//           <div className="text-xs font-medium">{m.label}</div>
+//         </button>
+//       ))}
+//     </div>
+//   </div>
+// )
+
+// const ResultCard = ({ title, content, icon: Icon, fieldName, onCopy, copied, isPrimary = false }) => (
+//   <motion.div
+//     initial={{ opacity: 0, y: 20 }}
+//     animate={{ opacity: 1, y: 0 }}
+//     className={`card ${isPrimary ? 'ring-2 ring-primary-200' : ''}`}
+//   >
+//     <div className="flex items-start justify-between gap-4 mb-4">
+//       <div className="flex items-center gap-2">
+//         {Icon && <Icon size={18} className={isPrimary ? 'text-primary-600' : 'text-secondary-600'} />}
+//         <h3 className={`font-semibold ${isPrimary ? 'text-secondary-900' : 'text-secondary-700'}`}>
+//           {title}
+//         </h3>
+//       </div>
+//       <button
+//         onClick={() => onCopy(content, fieldName)}
+//         disabled={copied}
+//         className="p-2 rounded-lg hover:bg-secondary-100 transition-colors disabled:opacity-50"
+//         aria-label={`Copy ${title}`}
+//         title="Copy to clipboard"
+//       >
+//         {copied === fieldName ? (
+//           <Check size={16} className="text-success-600" />
+//         ) : (
+//           <Copy size={16} className="text-secondary-600" />
+//         )}
+//       </button>
+//     </div>
+//     <div className="bg-secondary-50 rounded-lg p-4 border border-secondary-200">
+//       <p className="whitespace-pre-wrap text-sm text-secondary-700 leading-relaxed font-mono">
+//         {content}
+//       </p>
+//     </div>
+//   </motion.div>
+// )
+
+// const ErrorAlert = ({ error, onDismiss }) => (
+//   <AnimatePresence>
+//     {error && (
+//       <motion.div
+//         initial={{ opacity: 0, y: -10 }}
+//         animate={{ opacity: 1, y: 0 }}
+//         exit={{ opacity: 0, y: -10 }}
+//         className="flex items-start gap-3 p-4 bg-red-50 border border-red-200 rounded-lg"
+//       >
+//         <AlertCircle size={18} className="text-red-600 flex-shrink-0 mt-0.5" />
+//         <div className="flex-1">
+//           <p className="text-sm font-medium text-red-900">{error}</p>
+//         </div>
+//         <button
+//           onClick={onDismiss}
+//           className="text-red-600 hover:text-red-700 flex-shrink-0"
+//           aria-label="Dismiss error"
+//         >
+//           ✕
+//         </button>
+//       </motion.div>
+//     )}
+//   </AnimatePresence>
+// )
+
+// const LoadingPlaceholder = () => (
+//   <div className="space-y-4">
+//     {[...Array(3)].map((_, i) => (
+//       <div key={i} className="card animate-pulse">
+//         <div className="h-6 bg-secondary-200 rounded w-1/3 mb-4"></div>
+//         <div className="space-y-2">
+//           <div className="h-4 bg-secondary-200 rounded"></div>
+//           <div className="h-4 bg-secondary-200 rounded w-5/6"></div>
+//           <div className="h-4 bg-secondary-200 rounded w-4/6"></div>
+//         </div>
+//       </div>
+//     ))}
+//   </div>
+// )
+
+// // ============================================================================
+// // Main Component
+// // ============================================================================
+
 // const PostImprovementPage = () => {
-//   const [content, setContent] = useState('')
-//   const [model, setModel] = useState('gemini')
+//   const [formState, dispatch] = useReducer(formReducer, {
+//     content: '',
+//     model: 'gemini',
+//   })
+
 //   const [result, setResult] = useState(null)
 //   const [loading, setLoading] = useState(false)
 //   const [copiedField, setCopiedField] = useState(null)
+//   const [error, setError] = useState('')
 
-//   const handleSubmit = async (e) => {
-//     e.preventDefault()
-//     if (!content || content.trim().length < 10) {
-//       toast.error('Please enter at least 10 characters')
+//   const validateContent = useCallback(() => {
+//     const trimmedContent = formState.content.trim()
+
+//     if (!trimmedContent) {
+//       setError('Please enter your LinkedIn post')
+//       return false
+//     }
+
+//     if (trimmedContent.length < MIN_CONTENT_LENGTH) {
+//       setError(`Post must be at least ${MIN_CONTENT_LENGTH} characters (currently ${trimmedContent.length})`)
+//       return false
+//     }
+
+//     if (trimmedContent.length > MAX_CONTENT_LENGTH) {
+//       setError(`Post exceeds maximum length of ${MAX_CONTENT_LENGTH} characters`)
+//       return false
+//     }
+
+//     setError('')
+//     return true
+//   }, [formState.content])
+
+//   const handleSubmit = useCallback(
+//     async (e) => {
+//       e?.preventDefault?.()
+
+//       if (!validateContent()) return
+
+//       setLoading(true)
+//       setError('')
+
+//       try {
+//         const response = await api.post('/improve/post', {
+//           content: formState.content.trim(),
+//           model: formState.model,
+//         })
+
+//         if (response.data?.success && response.data?.data) {
+//           setResult(response.data.data)
+//           toast.success('✨ Post improved successfully!')
+//         } else {
+//           throw new Error(response.data?.message || 'Failed to improve post')
+//         }
+//       } catch (error) {
+//         const errorMessage =
+//           error.response?.data?.message || error.message || 'Failed to improve post'
+//         setError(errorMessage)
+//         toast.error(errorMessage)
+//         console.error('Post improvement error:', error)
+//       } finally {
+//         setLoading(false)
+//       }
+//     },
+//     [formState, validateContent]
+//   )
+
+//   const handleCopy = useCallback((text, fieldName) => {
+//     if (!text) {
+//       toast.error('Nothing to copy')
 //       return
 //     }
-//     setLoading(true)
-//     try {
-//       const response = await api.post('/improve/post', { content, model })
-//       if (response.data.success) {
-//         setResult(response.data.data)
-//         toast.success('Post improved!')
-//       }
-//     } catch (error) {
-//       toast.error(error.response?.data?.message || 'Failed to improve post')
-//     } finally {
-//       setLoading(false)
-//     }
-//   }
 
-//   const handleCopy = (text, field) => {
-//     navigator.clipboard.writeText(text)
-//     setCopiedField(field)
-//     toast.success('Copied to clipboard!')
-//     setTimeout(() => setCopiedField(null), 2000)
-//   }
+//     navigator.clipboard
+//       .writeText(text)
+//       .then(() => {
+//         setCopiedField(fieldName)
+//         toast.success('Copied to clipboard!')
+//         setTimeout(() => setCopiedField(null), COPY_FEEDBACK_DURATION)
+//       })
+//       .catch(() => {
+//         toast.error('Failed to copy')
+//       })
+//   }, [])
+
+//   const handleReset = useCallback(() => {
+//     dispatch({ type: 'RESET' })
+//     setResult(null)
+//     setError('')
+//     setLoading(false)
+//     setCopiedField(null)
+//   }, [])
 
 //   return (
 //     <div className="space-y-6">
+//       {/* Header */}
 //       <div>
-//         <h1 className="text-2xl font-bold text-secondary-900">Post Improvement Agent</h1>
-//         <p className="text-secondary-500 mt-1">Paste your LinkedIn post and get AI-powered improvements</p>
+//         <h1 className="text-3xl font-bold text-secondary-900">Post Improvement Agent</h1>
+//         <p className="text-secondary-500 mt-1">
+//           Paste your LinkedIn post and get AI-powered suggestions to boost engagement
+//         </p>
 //       </div>
 
+//       {/* Error Alert */}
+//       <ErrorAlert error={error} onDismiss={() => setError('')} />
+
+//       {/* Main Content */}
 //       <div className="grid lg:grid-cols-2 gap-6">
+//         {/* Input Section */}
 //         <div className="space-y-6">
 //           <div className="card">
-//             <div className="mb-4">
-//               <label className="block text-sm font-medium text-secondary-700 mb-2">Your LinkedIn Post *</label>
-//               <textarea
-//                 value={content}
-//                 onChange={(e) => setContent(e.target.value)}
-//                 placeholder="Paste your LinkedIn post here..."
-//                 className="textarea-field"
-//                 rows={8}
+//             <form onSubmit={handleSubmit} className="space-y-5">
+//               <FormTextarea
+//                 label="Your LinkedIn Post"
 //                 required
+//                 name="content"
+//                 value={formState.content}
+//                 onChange={(e) => dispatch({ type: 'SET_CONTENT', payload: e.target.value })}
+//                 placeholder="Paste your LinkedIn post here and let AI improve it..."
+//                 charCount={formState.content.length}
+//                 maxChars={MAX_CONTENT_LENGTH}
+//                 error={error && error.includes('Post') ? error : ''}
+//                 disabled={loading}
+//                 rows={10}
 //               />
-//             </div>
-//             <div className="mb-4">
-//               <label className="block text-sm font-medium text-secondary-700 mb-2">AI Model</label>
-//               <div className="grid grid-cols-4 gap-2">
-//                 {models.map((m) => (
+
+//               <ModelSelector
+//                 models={MODELS}
+//                 selectedModel={formState.model}
+//                 onModelChange={(value) => dispatch({ type: 'SET_MODEL', payload: value })}
+//                 disabled={loading}
+//               />
+
+//               {/* Form Actions */}
+//               <div className="flex gap-3 pt-2">
+//                 <button
+//                   type="submit"
+//                   disabled={loading}
+//                   className="flex-1 btn-primary flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+//                 >
+//                   {loading ? (
+//                     <>
+//                       <Loader2 size={18} className="animate-spin" />
+//                       <span>Improving...</span>
+//                     </>
+//                   ) : (
+//                     <>
+//                       <Wand2 size={18} />
+//                       <span>Improve My Post</span>
+//                     </>
+//                   )}
+//                 </button>
+//                 {result && (
 //                   <button
-//                     key={m.value}
 //                     type="button"
-//                     onClick={() => setModel(m.value)}
-//                     className={`p-3 rounded-lg border text-center transition-all ${
-//                       model === m.value ? 'border-primary-500 bg-primary-50 text-primary-700' : 'border-secondary-200 hover:border-secondary-300 text-secondary-600'
-//                     }`}
+//                     onClick={handleReset}
+//                     disabled={loading}
+//                     className="px-4 btn-secondary flex items-center gap-2 disabled:opacity-50"
 //                   >
-//                     <div className="text-lg font-bold mb-1">{m.icon}</div>
-//                     <div className="text-xs font-medium">{m.label}</div>
+//                     <RefreshCw size={16} />
+//                     <span className="hidden sm:inline">Clear</span>
 //                   </button>
-//                 ))}
+//                 )}
 //               </div>
-//             </div>
-//             <button
-//               onClick={handleSubmit}
-//               disabled={loading}
-//               className="w-full btn-primary flex items-center justify-center gap-2 disabled:opacity-50"
-//             >
-//               {loading ? <Loader2 size={18} className="animate-spin" /> : <Wand2 size={18} />}
-//               {loading ? 'Improving...' : 'Improve My Post'}
-//             </button>
+//             </form>
+//           </div>
+
+//           {/* Info Card */}
+//           <div className="card bg-blue-50 border border-blue-200">
+//             <h4 className="font-semibold text-blue-900 mb-2">💡 Tips for Best Results</h4>
+//             <ul className="text-sm text-blue-800 space-y-1">
+//               <li>• Use your actual LinkedIn post for accurate suggestions</li>
+//               <li>• Include context about your industry or niche</li>
+//               <li>• Experiment with different AI models for varied perspectives</li>
+//               <li>• Keep posts between {MIN_CONTENT_LENGTH} and {MAX_CONTENT_LENGTH} characters</li>
+//             </ul>
 //           </div>
 //         </div>
 
+//         {/* Results Section */}
 //         <div>
-//           <AnimatePresence>
-//             {result && (
+//           <AnimatePresence mode="wait">
+//             {loading ? (
+//               <LoadingPlaceholder />
+//             ) : result ? (
 //               <motion.div
-//                 initial={{ opacity: 0, y: 20 }}
-//                 animate={{ opacity: 1, y: 0 }}
+//                 key="results"
+//                 initial={{ opacity: 0 }}
+//                 animate={{ opacity: 1 }}
+//                 exit={{ opacity: 0 }}
 //                 className="space-y-4"
 //               >
-//                 <div className="card">
-//                   <div className="flex items-center justify-between mb-3">
-//                     <h3 className="font-semibold text-secondary-900 flex items-center gap-2">
-//                       <Wand2 size={18} className="text-warning-600" />
-//                       Improved Post
-//                     </h3>
-//                     <button
-//                       onClick={() => handleCopy(result.improvedPost, 'improved')}
-//                       className="p-2 rounded-lg hover:bg-secondary-100 transition-colors"
-//                     >
-//                       {copiedField === 'improved' ? <Check size={16} className="text-success-600" /> : <Copy size={16} className="text-secondary-600" />}
-//                     </button>
-//                   </div>
-//                   <div className="bg-secondary-50 rounded-lg p-4 whitespace-pre-wrap text-sm text-secondary-800 leading-relaxed">
-//                     {result.improvedPost}
-//                   </div>
-//                 </div>
+//                 {/* Primary Result */}
+//                 <ResultCard
+//                   title="Improved Post"
+//                   content={result.improvedPost || ''}
+//                   icon={Wand2}
+//                   fieldName="improved"
+//                   onCopy={handleCopy}
+//                   copied={copiedField}
+//                   isPrimary={true}
+//                 />
 
+//                 {/* Optional Results */}
 //                 {result.betterHooks && (
-//                   <div className="card">
-//                     <div className="flex items-center justify-between mb-3">
-//                       <h3 className="font-semibold text-secondary-900 text-sm">Better Hooks</h3>
-//                       <button
-//                         onClick={() => handleCopy(result.betterHooks, 'hooks')}
-//                         className="p-2 rounded-lg hover:bg-secondary-100 transition-colors"
-//                       >
-//                         {copiedField === 'hooks' ? <Check size={16} className="text-success-600" /> : <Copy size={16} className="text-secondary-600" />}
-//                       </button>
-//                     </div>
-//                     <div className="bg-secondary-50 rounded-lg p-4 whitespace-pre-wrap text-sm text-secondary-700">
-//                       {result.betterHooks}
-//                     </div>
-//                   </div>
+//                   <ResultCard
+//                     title="Better Opening Hooks"
+//                     content={result.betterHooks}
+//                     fieldName="hooks"
+//                     onCopy={handleCopy}
+//                     copied={copiedField}
+//                   />
 //                 )}
 
 //                 {result.betterCta && (
-//                   <div className="card">
-//                     <div className="flex items-center justify-between mb-3">
-//                       <h3 className="font-semibold text-secondary-900 text-sm">Better CTAs</h3>
-//                       <button
-//                         onClick={() => handleCopy(result.betterCta, 'cta')}
-//                         className="p-2 rounded-lg hover:bg-secondary-100 transition-colors"
-//                       >
-//                         {copiedField === 'cta' ? <Check size={16} className="text-success-600" /> : <Copy size={16} className="text-secondary-600" />}
-//                       </button>
-//                     </div>
-//                     <div className="bg-secondary-50 rounded-lg p-4 whitespace-pre-wrap text-sm text-secondary-700">
-//                       {result.betterCta}
-//                     </div>
-//                   </div>
+//                   <ResultCard
+//                     title="Stronger CTAs"
+//                     content={result.betterCta}
+//                     fieldName="cta"
+//                     onCopy={handleCopy}
+//                     copied={copiedField}
+//                   />
 //                 )}
 
 //                 {result.formattingTips && (
-//                   <div className="card">
-//                     <div className="flex items-center justify-between mb-3">
-//                       <h3 className="font-semibold text-secondary-900 text-sm">Formatting Tips</h3>
-//                       <button
-//                         onClick={() => handleCopy(result.formattingTips, 'formatting')}
-//                         className="p-2 rounded-lg hover:bg-secondary-100 transition-colors"
-//                       >
-//                         {copiedField === 'formatting' ? <Check size={16} className="text-success-600" /> : <Copy size={16} className="text-secondary-600" />}
-//                       </button>
-//                     </div>
-//                     <div className="bg-secondary-50 rounded-lg p-4 whitespace-pre-wrap text-sm text-secondary-700">
-//                       {result.formattingTips}
-//                     </div>
-//                   </div>
+//                   <ResultCard
+//                     title="Formatting Tips"
+//                     content={result.formattingTips}
+//                     fieldName="formatting"
+//                     onCopy={handleCopy}
+//                     copied={copiedField}
+//                   />
 //                 )}
 
 //                 {result.engagementBoosters && (
-//                   <div className="card">
-//                     <div className="flex items-center justify-between mb-3">
-//                       <h3 className="font-semibold text-secondary-900 text-sm">Engagement Boosters</h3>
-//                       <button
-//                         onClick={() => handleCopy(result.engagementBoosters, 'engagement')}
-//                         className="p-2 rounded-lg hover:bg-secondary-100 transition-colors"
-//                       >
-//                         {copiedField === 'engagement' ? <Check size={16} className="text-success-600" /> : <Copy size={16} className="text-secondary-600" />}
-//                       </button>
-//                     </div>
-//                     <div className="bg-secondary-50 rounded-lg p-4 whitespace-pre-wrap text-sm text-secondary-700">
-//                       {result.engagementBoosters}
-//                     </div>
-//                   </div>
+//                   <ResultCard
+//                     title="Engagement Boosters"
+//                     content={result.engagementBoosters}
+//                     fieldName="engagement"
+//                     onCopy={handleCopy}
+//                     copied={copiedField}
+//                   />
 //                 )}
 //               </motion.div>
-//             )}
+//             ) : null}
 //           </AnimatePresence>
 //         </div>
 //       </div>
@@ -203,9 +632,13 @@
 
 
 
-import { useState, useCallback, useReducer } from 'react'
+
+
+
+
+import { useState, useCallback, useReducer, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Wand2, Loader2, Copy, Check, AlertCircle, RefreshCw } from 'lucide-react'
+import { Wand2, Loader2, Copy, Check, AlertCircle, RefreshCw, Clock, X, Trash2, RotateCcw } from 'lucide-react'
 import api from '../services/api.js'
 import toast from 'react-hot-toast'
 
@@ -223,6 +656,18 @@ const MODELS = [
 const MIN_CONTENT_LENGTH = 10
 const MAX_CONTENT_LENGTH = 5000
 const COPY_FEEDBACK_DURATION = 2000
+
+const timeAgo = (dateStr) => {
+  const diff = Date.now() - new Date(dateStr).getTime()
+  const mins = Math.floor(diff / 60000)
+  if (mins < 1) return 'just now'
+  if (mins < 60) return `${mins}m ago`
+  const hrs = Math.floor(mins / 60)
+  if (hrs < 24) return `${hrs}h ago`
+  const days = Math.floor(hrs / 24)
+  if (days < 7) return `${days}d ago`
+  return new Date(dateStr).toLocaleDateString()
+}
 
 // ============================================================================
 // Form State Reducer
@@ -385,6 +830,28 @@ const PostImprovementPage = () => {
   const [copiedField, setCopiedField] = useState(null)
   const [error, setError] = useState('')
 
+  const [showHistory, setShowHistory] = useState(false)
+  const [historyItems, setHistoryItems] = useState([])
+  const [historyLoading, setHistoryLoading] = useState(false)
+
+  useEffect(() => {
+    fetchHistory()
+  }, [])
+
+  const fetchHistory = async () => {
+    setHistoryLoading(true)
+    try {
+      const response = await api.get('/history', { params: { type: 'improve', limit: 30 } })
+      if (response.data.success) {
+        setHistoryItems(response.data.data.items)
+      }
+    } catch (err) {
+      // silent fail, history is a convenience panel
+    } finally {
+      setHistoryLoading(false)
+    }
+  }
+
   const validateContent = useCallback(() => {
     const trimmedContent = formState.content.trim()
 
@@ -425,6 +892,7 @@ const PostImprovementPage = () => {
         if (response.data?.success && response.data?.data) {
           setResult(response.data.data)
           toast.success('✨ Post improved successfully!')
+          fetchHistory()
         } else {
           throw new Error(response.data?.message || 'Failed to improve post')
         }
@@ -467,14 +935,54 @@ const PostImprovementPage = () => {
     setCopiedField(null)
   }, [])
 
+  const loadFromHistory = useCallback((item) => {
+    dispatch({ type: 'SET_CONTENT', payload: item.input?.content || '' })
+    setResult({
+      improvedPost: item.output?.improvedPost || '',
+      betterHooks: item.output?.betterHooks || '',
+      betterCta: item.output?.betterCta || '',
+      formattingTips: item.output?.formattingTips || '',
+      engagementBoosters: item.output?.engagementBoosters || '',
+      originalContent: item.input?.content || '',
+    })
+    setError('')
+    setShowHistory(false)
+  }, [])
+
+  const handleClearHistory = async () => {
+    if (!confirm('Clear all history? This removes activity across every AI tool, not just improvements.')) return
+    try {
+      await api.delete('/history/clear')
+      setHistoryItems([])
+      toast.success('History cleared')
+    } catch (err) {
+      toast.error('Failed to clear history')
+    }
+  }
+
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div>
-        <h1 className="text-3xl font-bold text-secondary-900">Post Improvement Agent</h1>
-        <p className="text-secondary-500 mt-1">
-          Paste your LinkedIn post and get AI-powered suggestions to boost engagement
-        </p>
+      <div className="flex items-start justify-between gap-3 flex-wrap">
+        <div>
+          <h1 className="text-3xl font-bold text-secondary-900">Post Improvement Agent</h1>
+          <p className="text-secondary-500 mt-1">
+            Paste your LinkedIn post and get AI-powered suggestions to boost engagement
+          </p>
+        </div>
+        <button
+          onClick={() => setShowHistory(true)}
+          className="flex items-center gap-2 px-4 py-2.5 rounded-lg text-sm font-medium border border-secondary-200
+                     bg-white text-secondary-700 hover:border-secondary-300 transition-colors"
+        >
+          <Clock size={16} />
+          History
+          {historyItems.length > 0 && (
+            <span className="px-1.5 py-0.5 rounded-md text-xs font-semibold bg-primary-50 text-primary-600">
+              {historyItems.length}
+            </span>
+          )}
+        </button>
       </div>
 
       {/* Error Alert */}
@@ -622,6 +1130,91 @@ const PostImprovementPage = () => {
           </AnimatePresence>
         </div>
       </div>
+
+      {/* HISTORY DRAWER */}
+      <AnimatePresence>
+        {showHistory && (
+          <>
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setShowHistory(false)}
+              className="fixed inset-0 bg-black/40 backdrop-blur-sm z-40"
+            />
+            <motion.div
+              initial={{ x: '100%' }}
+              animate={{ x: 0 }}
+              exit={{ x: '100%' }}
+              transition={{ type: 'tween', duration: 0.25, ease: 'easeOut' }}
+              className="fixed right-0 top-0 h-full w-full max-w-md z-50 bg-white border-l border-secondary-200 shadow-2xl flex flex-col"
+            >
+              <div className="flex items-center justify-between px-5 py-4 border-b border-secondary-200">
+                <h3 className="font-semibold text-secondary-900 flex items-center gap-2">
+                  <Clock size={18} className="text-primary-600" />
+                  Improvement History
+                </h3>
+                <div className="flex items-center gap-1">
+                  {historyItems.length > 0 && (
+                    <button
+                      onClick={handleClearHistory}
+                      title="Clear history"
+                      className="p-2 rounded-lg text-secondary-400 hover:text-error-600 hover:bg-error-50 transition-colors"
+                    >
+                      <Trash2 size={16} />
+                    </button>
+                  )}
+                  <button
+                    onClick={() => setShowHistory(false)}
+                    className="p-2 rounded-lg text-secondary-400 hover:text-secondary-700 hover:bg-secondary-100 transition-colors"
+                  >
+                    <X size={18} />
+                  </button>
+                </div>
+              </div>
+
+              <div className="flex-1 overflow-y-auto scrollbar-thin px-5 py-4 space-y-3">
+                {historyLoading ? (
+                  <div className="flex items-center justify-center py-16">
+                    <Loader2 size={22} className="animate-spin text-primary-600" />
+                  </div>
+                ) : historyItems.length === 0 ? (
+                  <div className="flex flex-col items-center text-center py-16">
+                    <Clock size={36} className="text-secondary-300 mb-3" />
+                    <p className="text-sm text-secondary-500">
+                      No improvements yet. Your history will show up here.
+                    </p>
+                  </div>
+                ) : (
+                  historyItems.map((item) => (
+                    <button
+                      key={item._id}
+                      onClick={() => loadFromHistory(item)}
+                      className="w-full text-left rounded-xl p-4 border border-secondary-200 hover:border-primary-300
+                                 bg-secondary-50 hover:bg-primary-50/50 transition-colors group"
+                    >
+                      <div className="flex items-start justify-between gap-2 mb-1.5">
+                        <span className="text-sm font-semibold text-secondary-900 line-clamp-2">
+                          {item.input?.content}
+                        </span>
+                        <RotateCcw size={14} className="text-secondary-300 group-hover:text-primary-600 flex-shrink-0 mt-0.5 transition-colors" />
+                      </div>
+                      <p className="text-xs text-secondary-500 line-clamp-2 mb-2">
+                        {item.output?.improvedPost}
+                      </p>
+                      <div className="flex items-center justify-end text-[11px]">
+                        <span className="text-secondary-400">
+                          {timeAgo(item.createdAt)}
+                        </span>
+                      </div>
+                    </button>
+                  ))
+                )}
+              </div>
+            </motion.div>
+          </>
+        )}
+      </AnimatePresence>
     </div>
   )
 }
