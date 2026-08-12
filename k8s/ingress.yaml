@@ -1,17 +1,26 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: quickkart
-  namespace: quickkart
-  annotations: { nginx.ingress.kubernetes.io/rewrite-target: / }
+  name: linkedin-post-generator
+  namespace: linkedin-post-generator
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
 spec:
   rules:
-    - host: quickkart.local
+    - host: linkedin-post-generator.local
       http:
         paths:
           - path: /api
             pathType: Prefix
-            backend: { service: { name: server, port: { number: 5000 } } }
+            backend:
+              service:
+                name: backend-service
+                port:
+                  number: 5000
           - path: /
             pathType: Prefix
-            backend: { service: { name: client, port: { number: 80 } } }
+            backend:
+              service:
+                name: frontend-service
+                port:
+                  number: 80
