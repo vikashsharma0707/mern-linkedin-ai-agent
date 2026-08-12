@@ -35,7 +35,7 @@
 #         run: |
 #           docker push ${{ secrets.DOCKER_USERNAME }}/linkedin-client:latest
 
-name: Build, Push and Deploy Docker Images
+name: Build and Push Docker Images
 
 on:
   push:
@@ -71,56 +71,3 @@ jobs:
       - name: Push Frontend
         run: |
           docker push ${{ secrets.DOCKER_USERNAME }}/linkedin-client:latest
-
-
-  deploy:
-    runs-on: ubuntu-latest
-    needs: docker
-
-    steps:
-      - name: Checkout Code
-        uses: actions/checkout@v4
-
-      - name: Setup kubectl
-        uses: azure/setup-kubectl@v4
-
-      - name: Configure Kubernetes
-        run: |
-          mkdir -p ~/.kube
-          echo "${{ secrets.KUBE_CONFIG }}" | base64 --decode > ~/.kube/config
-
-      - name: Update Backend Image
-        run: |
-          kubectl set image deployment/linkedin-backend \
-          backend=${{ secrets.DOCKER_USERNAME }}/linkedin-backend:latest \
-          -n linkedin
-
-      - name: Update Frontend Image
-        run: |
-          kubectl set image deployment/linkedin-frontend \
-          frontend=${{ secrets.DOCKER_USERNAME }}/linkedin-client:latest \
-          -n linkedin
-
-      - name: Restart Backend
-        run: |
-          kubectl rollout restart deployment/linkedin-backend -n linkedin
-
-      - name: Restart Frontend
-        run: |
-          kubectl rollout restart deployment/linkedin-frontend -n linkedin
-
-      - name: Check Backend Deployment
-        run: |
-          kubectl rollout status deployment/linkedin-backend \
-          -n linkedin \
-          --timeout=180s
-
-      - name: Check Frontend Deployment
-        run: |
-          kubectl rollout status deployment/linkedin-frontend \
-          -n linkedin \
-          --timeout=180s
-
-      - name: Check Pods
-        run: |
-          kubectl get pods -n linkedin
